@@ -153,11 +153,11 @@ function Sidebar({ onOpenBoardModal }) {
               styles={{
                 root: {
                   borderRadius: 12,
-                  border: "1px solid var(--mantine-color-gray-2)",
+                  border: "1px solid var(--mantine-color-default-border)",
                   backgroundColor:
                     board.id === selectedBoardId
-                      ? "var(--mantine-color-blue-0)"
-                      : "var(--mantine-color-white)",
+                      ? "var(--mantine-primary-color-light)"
+                      : "var(--mantine-color-body)",
                 },
                 label: {
                   fontWeight: 700,

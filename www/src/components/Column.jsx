@@ -21,14 +21,13 @@ function Column({ column, tasks, isFiltering = false, onCreateTask, onEditTask, 
       withBorder
       shadow="xs"
       style={{
-        width: 332,
-        minWidth: 332,
-        maxWidth: 332,
+        width: "clamp(260px, 80vw, 332px)",
+        minWidth: "clamp(260px, 80vw, 332px)",
+        maxWidth: "clamp(260px, 80vw, 332px)",
         display: "flex",
         flexDirection: "column",
         maxHeight: "100%",
-        background:
-          "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,251,255,0.92) 100%)",
+        background: "var(--mantine-color-body)",
       }}
     >
       <Group justify="space-between" mb="sm" wrap="nowrap">
@@ -68,7 +67,7 @@ function Column({ column, tasks, isFiltering = false, onCreateTask, onEditTask, 
               border: "1px dashed transparent",
               backgroundColor: snapshot.isDraggingOver
                 ? "rgba(59,130,246,0.08)"
-                : "rgba(248,250,252,0.66)",
+                : "var(--mantine-color-default-hover)",
               borderColor: snapshot.isDraggingOver
                 ? "rgba(59,130,246,0.5)"
                 : "rgba(203,213,225,0.8)",
@@ -94,7 +93,7 @@ function Column({ column, tasks, isFiltering = false, onCreateTask, onEditTask, 
                 style={{
                   borderStyle: "dashed",
                   borderColor: "var(--mantine-color-gray-3)",
-                  backgroundColor: "var(--mantine-color-white)",
+                  backgroundColor: "var(--mantine-color-body)",
                 }}
               >
                 <Text c="dimmed" size="sm" ta="center">

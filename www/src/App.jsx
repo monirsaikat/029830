@@ -4,6 +4,7 @@ import {
   AppShell,
   Avatar,
   Badge,
+  Burger,
   Button,
   Center,
   Divider,
@@ -13,10 +14,20 @@ import {
   Text,
   TextInput,
   Title,
+  useComputedColorScheme,
+  useMantineColorScheme,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 import { notifications } from "@mantine/notifications";
-import { IconLayoutGrid, IconPlus, IconSearch, IconX } from "@tabler/icons-react";
+import {
+  IconLayoutGrid,
+  IconMoon,
+  IconPlus,
+  IconSearch,
+  IconSun,
+  IconX,
+} from "@tabler/icons-react";
 import { useTaskStore } from "./store/useTaskStore";
 import Sidebar from "./components/Sidebar";
 import BoardView from "./components/BoardView";
@@ -37,6 +48,11 @@ function App() {
   const updateTask = useTaskStore((state) => state.updateTask);
   const deleteTask = useTaskStore((state) => state.deleteTask);
   const setSearchQuery = useTaskStore((state) => state.setSearchQuery);
+
+  const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] = useDisclosure(false);
+  const { setColorScheme } = useMantineColorScheme();
+  const computedColorScheme = useComputedColorScheme("light");
+  const isDark = computedColorScheme === "dark";
 
   const [boardModalState, setBoardModalState] = useState({
     opened: false,
@@ -96,18 +112,19 @@ function App() {
         header={{ height: 82 }}
         navbar={{
           width: sidebarOpen ? 300 : 88,
-          breakpoint: "sm",
-          collapsed: { mobile: false, desktop: false },
+          breakpoint: "md",
+          collapsed: {
+            mobile: !mobileOpened,
+            desktop: false,
+          },
         }}
         padding="md"
       >
         <AppShell.Navbar
           p="md"
           style={{
-            borderRight: "1px solid var(--mantine-color-gray-3)",
-            background:
-              "linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(247,250,255,0.95) 100%)",
-            backdropFilter: "blur(10px)",
+            borderRight: "1px solid var(--mantine-color-default-border)",
+            background: "var(--mantine-color-body)",
           }}
         >
           <Sidebar
@@ -118,6 +135,7 @@ function App() {
                 boardId: payload.boardId ?? null,
                 defaultName: payload.defaultName ?? "",
               });
+              closeMobile();
             }}
           />
         </AppShell.Navbar>
@@ -125,27 +143,30 @@ function App() {
         <AppShell.Header
           px="lg"
           style={{
-            borderBottom: "1px solid var(--mantine-color-gray-3)",
-            backgroundColor: "rgba(255,255,255,0.88)",
-            backdropFilter: "blur(8px)",
+            borderBottom: "1px solid var(--mantine-color-default-border)",
+            backgroundColor: "var(--mantine-color-body)",
           }}
         >
           <Group justify="space-between" h="100%" wrap="nowrap">
-            <Stack gap={2}>
-              <Group gap="xs" wrap="nowrap">
-                <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
-                  Workspace
-                </Text>
-                <Badge variant="dot" color="teal" size="sm">
-                  synced
-                </Badge>
-              </Group>
-              <Title order={2} ff='"Plus Jakarta Sans", Inter, sans-serif'>
-                {selectedBoard?.name ?? "No board selected"}
-              </Title>
-            </Stack>
+            <Group wrap="nowrap" gap="sm">
+              <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="md" size="sm" />
 
-            <Group wrap="nowrap" style={{ flex: 1, maxWidth: 720 }}>
+              <Stack gap={2}>
+                <Group gap="xs" wrap="nowrap">
+                  <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
+                    Workspace
+                  </Text>
+                  <Badge variant="dot" color="teal" size="sm">
+                    synced
+                  </Badge>
+                </Group>
+                <Title order={2} ff='"Plus Jakarta Sans", Inter, sans-serif'>
+                  {selectedBoard?.name ?? "No board selected"}
+                </Title>
+              </Stack>
+            </Group>
+
+            <Group wrap="nowrap" style={{ flex: 1, maxWidth: 760 }} visibleFrom="sm">
               <TextInput
                 leftSection={<IconSearch size={16} />}
                 placeholder="Search by title or description"
@@ -176,6 +197,16 @@ function App() {
                 New task
               </Button>
 
+              <ActionIcon
+                variant="light"
+                size="lg"
+                radius="xl"
+                aria-label="Toggle color scheme"
+                onClick={() => setColorScheme(isDark ? "light" : "dark")}
+              >
+                {isDark ? <IconSun size={18} /> : <IconMoon size={18} />}
+              </ActionIcon>
+
               <Avatar radius="xl" color="blue" variant="light">
                 U
               </Avatar>
@@ -186,13 +217,36 @@ function App() {
         <AppShell.Main
           p="lg"
           style={{
-            height: "100%",
             minHeight: 0,
-            overflow: "hidden",
-            background:
-              "radial-gradient(circle at 18% -14%, rgba(37,99,235,0.22), transparent 36%), radial-gradient(circle at 92% 5%, rgba(14,165,233,0.12), transparent 30%), linear-gradient(180deg, #f5f8ff 0%, #edf2fb 100%)",
+            overflow: "auto",
           }}
         >
+          <Stack gap="md" hiddenFrom="sm">
+            <TextInput
+              leftSection={<IconSearch size={16} />}
+              placeholder="Search tasks"
+              aria-label="Search tasks"
+              value={searchQuery}
+              onChange={(event) => setSearchQuery(event.currentTarget.value)}
+            />
+            <Group grow>
+              <Button
+                leftSection={<IconPlus size={16} />}
+                disabled={!selectedBoard || boardColumns.length === 0}
+                onClick={() => openTaskCreate(boardColumns[0]?.id)}
+              >
+                New task
+              </Button>
+              <Button
+                variant="default"
+                leftSection={isDark ? <IconSun size={16} /> : <IconMoon size={16} />}
+                onClick={() => setColorScheme(isDark ? "light" : "dark")}
+              >
+                Theme
+              </Button>
+            </Group>
+          </Stack>
+
           {boards.length === 0 ? (
             <Center h="calc(100vh - 120px)">
               <Paper p="xl" radius="xl" withBorder maw={560} w="100%" shadow="md">
@@ -221,17 +275,8 @@ function App() {
               </Paper>
             </Center>
           ) : selectedBoard && boardColumns.length > 0 ? (
-            <Stack gap="md" h="100%" style={{ minHeight: 0 }}>
-              <Paper
-                withBorder
-                radius="xl"
-                p="md"
-                shadow="xs"
-                style={{
-                  background:
-                    "linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.82) 100%)",
-                }}
-              >
+            <Stack gap="md" h="100%" style={{ minHeight: 0 }} mt={{ base: "md", sm: 0 }}>
+              <Paper withBorder radius="xl" p="md" shadow="xs">
                 <Group justify="space-between">
                   <Group>
                     <Badge leftSection={<IconLayoutGrid size={12} />} variant="light" size="lg">
@@ -245,13 +290,11 @@ function App() {
                     </Badge>
                   </Group>
 
-                  <Group gap="xs">
-                    <Text size="sm" c="dimmed">
-                      {searchQuery.trim()
-                        ? `${boardTasks.length} result${boardTasks.length === 1 ? "" : "s"}`
-                        : "Drag cards between columns"}
-                    </Text>
-                  </Group>
+                  <Text size="sm" c="dimmed">
+                    {searchQuery.trim()
+                      ? `${boardTasks.length} result${boardTasks.length === 1 ? "" : "s"}`
+                      : "Drag cards between columns"}
+                  </Text>
                 </Group>
                 {searchQuery.trim() ? (
                   <>
