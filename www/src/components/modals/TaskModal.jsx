@@ -121,9 +121,10 @@ function TaskModal({
             required
             autoFocus
             value={values.title}
-            onChange={(event) =>
-              setValues((prev) => ({ ...prev, title: event.currentTarget.value }))
-            }
+            onChange={(event) => {
+              const nextTitle = event.currentTarget.value;
+              setValues((prev) => ({ ...prev, title: nextTitle }));
+            }}
             error={errors.title}
           />
 
@@ -133,9 +134,10 @@ function TaskModal({
             minRows={3}
             autosize
             value={values.description}
-            onChange={(event) =>
-              setValues((prev) => ({ ...prev, description: event.currentTarget.value }))
-            }
+            onChange={(event) => {
+              const nextDescription = event.currentTarget.value;
+              setValues((prev) => ({ ...prev, description: nextDescription }));
+            }}
           />
 
           <Group grow>
@@ -175,9 +177,10 @@ function TaskModal({
             placeholder="Pick due date"
             min={dayjs().format("YYYY-MM-DD")}
             value={values.dueDate}
-            onChange={(event) =>
-              setValues((prev) => ({ ...prev, dueDate: event.currentTarget.value }))
-            }
+            onChange={(event) => {
+              const nextDueDate = event.currentTarget.value;
+              setValues((prev) => ({ ...prev, dueDate: nextDueDate }));
+            }}
             error={errors.dueDate}
           />
 
