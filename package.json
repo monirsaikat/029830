@@ -1,0 +1,37 @@
+{
+  "name": "task2",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "npm run prep:neu-dev && concurrently -k \"npm:dev:vite\" \"./bin/neu-clean-env.sh run --frontend-lib-dev -- --window-enable-inspector\"",
+    "build": "npm run build:vite && npm run build:neu",
+    "dev:neu": "./bin/neu-clean-env.sh run -- --window-enable-inspector",
+    "build:neu": "./bin/neu-clean-env.sh build",
+    "prep:neu-dev": "mkdir -p www/build/icons && cp -f www/public/icons/appIcon.png www/build/icons/appIcon.png",
+    "dev:vite": "vite",
+    "build:vite": "vite build",
+    "preview": "vite preview",
+    "postinstall": "neu update"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@hello-pangea/dnd": "^18.0.1",
+    "@mantine/core": "^8.3.15",
+    "@mantine/hooks": "^8.3.15",
+    "@mantine/modals": "^8.3.15",
+    "@mantine/notifications": "^8.3.15",
+    "@tabler/icons-react": "^3.36.1",
+    "dayjs": "^1.11.19",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "uuid": "^13.0.0",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@neutralinojs/neu": "^9.3.1",
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "vite": "^5.4.0"
+  }
+}
