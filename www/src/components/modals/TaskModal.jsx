@@ -46,12 +46,14 @@ function TaskModal({
   useEffect(() => {
     if (!opened) return;
 
+    const resolvedColumnId = task?.columnId ?? defaultColumnId ?? columns[0]?.id ?? "";
+
     setValues({
       title: task?.title ?? "",
       description: task?.description ?? "",
       priority: task?.priority ?? "medium",
       dueDate: toInputDateValue(task?.dueDate),
-      columnId: task?.columnId ?? defaultColumnId ?? columns[0]?.id ?? "",
+      columnId: resolvedColumnId,
     });
     setErrors({
       title: "",
@@ -108,6 +110,8 @@ function TaskModal({
       centered
       radius="md"
       size="lg"
+      withinPortal={false}
+      keepMounted
     >
       <form onSubmit={handleSubmit}>
         <Stack>
@@ -140,7 +144,7 @@ function TaskModal({
               placeholder="Pick priority"
               data={PRIORITY_OPTIONS}
               allowDeselect={false}
-              value={values.priority}
+              value={values.priority ?? null}
               onChange={(next) =>
                 setValues((prev) => ({
                   ...prev,
@@ -154,7 +158,7 @@ function TaskModal({
               placeholder="Select destination column"
               data={columns.map((column) => ({ value: column.id, label: column.name }))}
               allowDeselect={false}
-              value={values.columnId}
+              value={values.columnId || null}
               onChange={(next) =>
                 setValues((prev) => ({
                   ...prev,
