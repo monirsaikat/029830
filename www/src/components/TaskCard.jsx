@@ -43,7 +43,7 @@ function TaskCard({ task, index, isDragDisabled = false, onEdit, onDelete }) {
             borderColor: snapshot.isDragging
               ? "var(--mantine-color-blue-4)"
               : "var(--mantine-color-gray-2)",
-            backgroundColor: "var(--mantine-color-white)",
+            backgroundColor: "var(--mantine-color-body)",
           }}
         >
           <Stack gap="xs">

@@ -3,10 +3,11 @@ import { createTheme, rem } from "@mantine/core";
 export const theme = createTheme({
   fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
   headings: {
-    fontFamily: '"Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    fontFamily:
+      '"Plus Jakarta Sans", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
     fontWeight: "700",
   },
-  primaryColor: "blue",
+  primaryColor: "indigo",
   defaultRadius: "md",
   components: {
     AppShell: {
@@ -23,7 +24,8 @@ export const theme = createTheme({
     Card: {
       styles: {
         root: {
-          borderColor: "var(--mantine-color-gray-2)",
+          borderColor: "var(--mantine-color-default-border)",
+          backgroundColor: "var(--mantine-color-body)",
         },
       },
     },
@@ -44,8 +46,7 @@ export const theme = createTheme({
       },
       styles: {
         input: {
-          color: "var(--mantine-color-dark-8)",
-          backgroundColor: "var(--mantine-color-white)",
+          backgroundColor: "var(--mantine-color-body)",
         },
       },
     },
@@ -55,16 +56,14 @@ export const theme = createTheme({
       },
       styles: {
         input: {
-          color: "var(--mantine-color-dark-8)",
-          backgroundColor: "var(--mantine-color-white)",
+          backgroundColor: "var(--mantine-color-body)",
         },
       },
     },
     Select: {
       styles: {
         input: {
-          color: "var(--mantine-color-dark-8)",
-          backgroundColor: "var(--mantine-color-white)",
+          backgroundColor: "var(--mantine-color-body)",
         },
       },
     },
