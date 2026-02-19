@@ -5,24 +5,17 @@ import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
-import App from "./App";
+import App from "./App.jsx";
+import { theme } from "./theme";
 import "./index.css";
-
-// function onWindowClose() {
-//   Neutralino.app.exit();
-// }
-
-// Neutralino.init();
-// Neutralino.events.on("windowClose", onWindowClose);
-
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <MantineProvider defaultColorScheme="light">
+    <MantineProvider theme={theme} defaultColorScheme="light">
       <ModalsProvider>
         <Notifications position="top-right" />
         <App />
       </ModalsProvider>
     </MantineProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
