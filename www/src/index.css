@@ -27,15 +27,3 @@ body {
 .mantine-AppShell-main {
   min-height: 0;
 }
-
-[contenteditable][data-placeholder]:empty::before {
-  content: attr(data-placeholder);
-  color: var(--mantine-color-dimmed);
-  pointer-events: none;
-}
-
-[contenteditable] ul,
-[contenteditable] ol {
-  margin: 0;
-  padding-left: 1.1rem;
-}

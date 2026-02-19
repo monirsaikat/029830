@@ -45,7 +45,6 @@ function TaskCard({ task, index, isDragDisabled = false, onEdit, onDelete }) {
               ? "var(--mantine-color-blue-4)"
               : "var(--mantine-color-gray-2)",
             backgroundColor: "var(--mantine-color-body)",
-            cursor: isDragDisabled ? "default" : "grab",
           }}
         >
           <Stack gap="xs">

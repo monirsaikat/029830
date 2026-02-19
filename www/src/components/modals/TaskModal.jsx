@@ -257,10 +257,10 @@ function TaskModal({
 
           <RichTextField
             value={values.description}
-            onChange={(nextDescription) =>
-              setValues((prev) => ({ ...prev, description: nextDescription }))
-            }
-            error={errors.description}
+            onChange={(event) => {
+              const nextDescription = event.currentTarget.value;
+              setValues((prev) => ({ ...prev, description: nextDescription }));
+            }}
           />
 
           {hasRichTextContent(values.description) ? (
