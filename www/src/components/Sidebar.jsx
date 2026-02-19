@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Avatar,
+  Badge,
   Button,
   Group,
   Menu,
@@ -16,6 +17,7 @@ import {
   IconDotsVertical,
   IconEdit,
   IconLayoutSidebarLeftCollapse,
+  IconLayoutSidebarLeftExpand,
   IconPlus,
   IconTrash,
 } from "@tabler/icons-react";
@@ -36,18 +38,27 @@ function Sidebar({ onOpenBoardModal }) {
   const setSidebarOpen = useTaskStore((state) => state.setSidebarOpen);
 
   return (
-    <Stack gap="sm" h="100%">
+    <Stack gap="sm" h="100%" style={{ minHeight: 0 }}>
       <Group justify={sidebarOpen ? "space-between" : "center"} wrap="nowrap">
         {sidebarOpen ? (
-          <Group gap="xs">
-            <Avatar radius="md" color="blue" variant="light" size="sm">
+          <Group gap="xs" wrap="nowrap">
+            <Avatar radius="md" color="indigo" variant="light" size="sm">
               TB
             </Avatar>
-            <Text fw={700} ff='"Plus Jakarta Sans", Inter, sans-serif'>
-              Task Boards
-            </Text>
+            <div>
+              <Text fw={800} ff='"Plus Jakarta Sans", Inter, sans-serif' size="sm">
+                Task Boards
+              </Text>
+              <Text size="xs" c="dimmed">
+                Workspace boards
+              </Text>
+            </div>
           </Group>
-        ) : null}
+        ) : (
+          <Avatar radius="md" color="indigo" variant="light" size="sm">
+            TB
+          </Avatar>
+        )}
 
         <Tooltip label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}>
           <ActionIcon
@@ -56,11 +67,7 @@ function Sidebar({ onOpenBoardModal }) {
             aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
             onClick={() => setSidebarOpen(!sidebarOpen)}
           >
-            {sidebarOpen ? (
-              <IconLayoutSidebarLeftCollapse size={16} />
-            ) : (
-              <IconChevronRight size={16} />
-            )}
+            {sidebarOpen ? <IconLayoutSidebarLeftCollapse size={16} /> : <IconLayoutSidebarLeftExpand size={16} />}
           </ActionIcon>
         </Tooltip>
       </Group>
@@ -69,15 +76,16 @@ function Sidebar({ onOpenBoardModal }) {
         fullWidth={sidebarOpen}
         leftSection={sidebarOpen ? <IconPlus size={16} /> : null}
         variant="filled"
-        color="blue"
+        color="indigo"
+        radius="md"
         aria-label="Create a new board"
         onClick={() => onOpenBoardModal({ mode: "create" })}
       >
         {sidebarOpen ? "New board" : <IconPlus size={16} />}
       </Button>
 
-      <ScrollArea offsetScrollbars type="auto" style={{ flex: 1 }}>
-        <Stack gap={6}>
+      <ScrollArea offsetScrollbars type="auto" style={{ flex: 1, minHeight: 0 }}>
+        <Stack gap={8}>
           {boards.map((board) => (
             <NavLink
               key={board.id}
@@ -86,7 +94,7 @@ function Sidebar({ onOpenBoardModal }) {
               description={sidebarOpen ? "Board" : ""}
               onClick={() => selectBoard(board.id)}
               leftSection={
-                <Avatar radius="xl" color={board.id === selectedBoardId ? "blue" : "gray"} size={26}>
+                <Avatar radius="xl" color={board.id === selectedBoardId ? "indigo" : "gray"} size={26}>
                   {board.name.slice(0, 1).toUpperCase()}
                 </Avatar>
               }
@@ -152,16 +160,20 @@ function Sidebar({ onOpenBoardModal }) {
               }
               styles={{
                 root: {
-                  borderRadius: 12,
-                  border: "1px solid var(--mantine-color-gray-2)",
+                  borderRadius: 14,
+                  border: "1px solid var(--mantine-color-default-border)",
                   backgroundColor:
                     board.id === selectedBoardId
-                      ? "var(--mantine-color-blue-0)"
-                      : "var(--mantine-color-white)",
+                      ? "var(--mantine-primary-color-light)"
+                      : "var(--mantine-color-body)",
+                  overflow: "hidden",
                 },
                 label: {
                   fontWeight: 700,
                   lineHeight: 1.25,
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
                 },
               }}
             />
@@ -170,10 +182,21 @@ function Sidebar({ onOpenBoardModal }) {
       </ScrollArea>
 
       {sidebarOpen ? (
-        <Text size="xs" c="dimmed" ta="center">
-          {boards.length} board{boards.length === 1 ? "" : "s"}
-        </Text>
-      ) : null}
+        <Group justify="space-between" px={4}>
+          <Text size="xs" c="dimmed">
+            Boards
+          </Text>
+          <Badge variant="light" color="indigo" radius="xl">
+            {boards.length}
+          </Badge>
+        </Group>
+      ) : (
+        <Tooltip label={`${boards.length} boards`}>
+          <ActionIcon variant="subtle" color="gray" mx="auto" aria-label="board count">
+            <IconChevronRight size={14} />
+          </ActionIcon>
+        </Tooltip>
+      )}
     </Stack>
   );
 }

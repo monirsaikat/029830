@@ -8,6 +8,7 @@ import {
 } from "@tabler/icons-react";
 import { Draggable } from "@hello-pangea/dnd";
 import { formatDueDate } from "../utils/date";
+import { hasRichTextContent, toPlainText } from "../utils/richText";
 
 const PRIORITY_STYLES = {
   low: { color: "teal", label: "Low" },
@@ -43,7 +44,8 @@ function TaskCard({ task, index, isDragDisabled = false, onEdit, onDelete }) {
             borderColor: snapshot.isDragging
               ? "var(--mantine-color-blue-4)"
               : "var(--mantine-color-gray-2)",
-            backgroundColor: "var(--mantine-color-white)",
+            backgroundColor: "var(--mantine-color-body)",
+            cursor: isDragDisabled ? "default" : "grab",
           }}
         >
           <Stack gap="xs">
@@ -77,9 +79,9 @@ function TaskCard({ task, index, isDragDisabled = false, onEdit, onDelete }) {
               </Menu>
             </Group>
 
-            {task.description ? (
+            {hasRichTextContent(task.description) ? (
               <Text c="dimmed" size="sm" lineClamp={3}>
-                {task.description}
+                {toPlainText(task.description)}
               </Text>
             ) : null}
 
