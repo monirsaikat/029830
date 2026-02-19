@@ -9,7 +9,6 @@ import Column from "./Column";
  * boardId: string,
  * columns: import("../store/useTaskStore").Column[],
  * tasks: import("../store/useTaskStore").Task[],
- * isFiltering?: boolean,
  * onCreateTask: (columnId: string) => void,
  * onEditTask: (task: import("../store/useTaskStore").Task) => void,
  * onDeleteTask: (task: import("../store/useTaskStore").Task) => void,
@@ -19,7 +18,6 @@ function BoardView({
   boardId,
   columns,
   tasks,
-  isFiltering = false,
   onCreateTask,
   onEditTask,
   onDeleteTask,
@@ -82,7 +80,6 @@ function BoardView({
                   key={column.id}
                   column={column}
                   tasks={tasksByColumn[column.id] ?? []}
-                  isFiltering={isFiltering}
                   onCreateTask={onCreateTask}
                   onEditTask={onEditTask}
                   onDeleteTask={onDeleteTask}

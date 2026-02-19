@@ -7,13 +7,12 @@ import TaskCard from "./TaskCard";
  * @param {{
  * column: import("../store/useTaskStore").Column,
  * tasks: import("../store/useTaskStore").Task[],
- * isFiltering?: boolean,
  * onCreateTask: (columnId: string) => void,
  * onEditTask: (task: import("../store/useTaskStore").Task) => void,
  * onDeleteTask: (task: import("../store/useTaskStore").Task) => void,
  * }} props
  */
-function Column({ column, tasks, isFiltering = false, onCreateTask, onEditTask, onDeleteTask }) {
+function Column({ column, tasks, onCreateTask, onEditTask, onDeleteTask }) {
   return (
     <Paper
       p="sm"

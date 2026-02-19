@@ -33,6 +33,7 @@ import Sidebar from "./components/Sidebar";
 import BoardView from "./components/BoardView";
 import BoardModal from "./components/modals/BoardModal";
 import TaskModal from "./components/modals/TaskModal";
+import { toPlainText } from "./utils/richText";
 
 function App() {
   const boards = useTaskStore((state) => state.boards);
@@ -87,7 +88,7 @@ function App() {
     if (!query) return allBoardTasks;
 
     return allBoardTasks.filter((task) => {
-      const haystack = `${task.title} ${task.description}`.toLowerCase();
+      const haystack = `${task.title} ${toPlainText(task.description)}`.toLowerCase();
       return haystack.includes(query);
     });
   }, [allBoardTasks, searchQuery]);
@@ -296,21 +297,13 @@ function App() {
                       : "Drag cards between columns"}
                   </Text>
                 </Group>
-                {searchQuery.trim() ? (
-                  <>
-                    <Divider my="sm" />
-                    <Text size="xs" c="dimmed">
-                      Filtering is active; drag is temporarily disabled to keep order deterministic.
-                    </Text>
-                  </>
-                ) : null}
+                {searchQuery.trim() ? <Divider my="sm" /> : null}
               </Paper>
 
               <BoardView
                 boardId={selectedBoard.id}
                 columns={boardColumns}
                 tasks={boardTasks}
-                isFiltering={Boolean(searchQuery.trim())}
                 onCreateTask={openTaskCreate}
                 onEditTask={(task) => {
                   setTaskModalState({
